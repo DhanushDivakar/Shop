@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
+import 'product.dart';
 
 class Products with ChangeNotifier { //this is a mixin class
   List<Product> _items = [
@@ -40,6 +40,10 @@ class Products with ChangeNotifier { //this is a mixin class
   List<Product> get items{
     return [..._items]; //this line returns a copy of the items
   }
+  Product findById(String id){
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
 
   void addProducts() {
    // _items.add(value);
