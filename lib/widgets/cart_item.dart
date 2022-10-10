@@ -10,7 +10,13 @@ class CartItem extends StatelessWidget {
   final int qunatity;
   final String title;
 
-  CartItem(this.id,this.productId, this.price, this.qunatity, this.title, );
+  CartItem(
+    this.id,
+    this.productId,
+    this.price,
+    this.qunatity,
+    this.title,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +31,28 @@ class CartItem extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 20),
-        margin: EdgeInsets.symmetric(horizontal: 15,vertical: 4),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       ),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Are you sure'),
+            content: Text("Do you want remove the item from the cart?"),
+            actions: <Widget>[
+              FlatButton(onPressed: () {
+                Navigator.of(ctx).pop(false);
+              }, child: Text("No")),
+              FlatButton(onPressed: () {
+                Navigator.of(ctx).pop(true);
+              }, child: Text("Yes")),
+            ],
+          ),
+        );
+      },
       onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId );
-
-
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),

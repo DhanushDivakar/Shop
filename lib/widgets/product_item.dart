@@ -15,10 +15,10 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context,
+    final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context,
         listen:
-            false);
-    final cart = Provider.of<Cart>(context, listen: false);//in this method thwe whole build method will rerun whenever the data changes
+            false); //in this method thwe whole build method will rerun whenever the data changes
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: GridTile(
@@ -56,6 +56,18 @@ class ProductItem extends StatelessWidget {
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
               cart.addItem(product.id, product.price, product.title);
+              Scaffold.of(context).hideCurrentSnackBar();
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "Added Item to cart",
+                  ),
+                  action: SnackBarAction(label: "UNDO", onPressed: () {
+                    cart.removeSingleItem(product.id);
+                  },),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             },
             color: Theme.of(context).accentColor,
           ),
