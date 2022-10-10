@@ -12,7 +12,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
-  
+ //this is edit cart widget
   @override
   void initState() {
     _imageUrlController.addListener(_updateImageUrl);
