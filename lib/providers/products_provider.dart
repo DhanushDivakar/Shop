@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import 'product.dart';
+import 'package:http/http.dart'
+    as http; //to avoid name clash we use prefix(http)
 
 class Products with ChangeNotifier {
   //this is a mixin class
@@ -64,16 +66,31 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProducts(Product product) {
-    // _items.add(value);
-    final newProduct = Product(
-        id: DateTime.now().toString(),
-        description: product.description,
-        title: product.title,
-        price: product.price,
-        imageUrl: product.imageUrl);
-    _items.add(newProduct);
-    notifyListeners(); // this is provided by the mixin ChnageNotifier which helps to rebuilt the widget when ever there is a change in the products
+  Future<void> addProducts(Product product) {
+    const url =
+        'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products.json';
+    return http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavorite': product.isFavorite,
+      }),
+    )
+        .then((response) {
+      // _items.add(value);
+      final newProduct = Product(
+          id: json.decode(response.body)['name'],//this is the nuique key which is generated in firebasewhich we can use //we use['name] cz it is map with a name key so only to fetch the name(key) we use name
+          description: product.description,
+          title: product.title,
+          price: product.price,
+          imageUrl: product.imageUrl);
+      _items.add(newProduct);
+      notifyListeners(); // this is provided by the mixin ChnageNotifier which helps to rebuilt the widget when ever there is a change in the products
+    });
   }
 
   void updateProduct(String id, Product newProduct) {
@@ -89,6 +106,5 @@ class Products with ChangeNotifier {
   void deleteProduct(String id) {
     _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
-
   }
 }
