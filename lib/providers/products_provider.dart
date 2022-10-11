@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'product.dart';
 
-class Products with ChangeNotifier { //this is a mixin class
+class Products with ChangeNotifier {
+  //this is a mixin class
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -10,7 +11,7 @@ class Products with ChangeNotifier { //this is a mixin class
       description: 'A red shirt - it is pretty red!',
       price: 29.99,
       imageUrl:
-      'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
     ),
     Product(
       id: 'p2',
@@ -18,7 +19,7 @@ class Products with ChangeNotifier { //this is a mixin class
       description: 'A nice pair of trousers.',
       price: 59.99,
       imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
     ),
     Product(
       id: 'p3',
@@ -26,7 +27,7 @@ class Products with ChangeNotifier { //this is a mixin class
       description: 'Warm and cozy - exactly what you need for the winter.',
       price: 19.99,
       imageUrl:
-      'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
     ),
     Product(
       id: 'p4',
@@ -34,24 +35,25 @@ class Products with ChangeNotifier { //this is a mixin class
       description: 'Prepare any meal you want.',
       price: 49.99,
       imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
   ];
+
   //var _showFavoritesOnly = false;
-  List<Product> get items{
+  List<Product> get items {
     // if(_showFavoritesOnly){
     //   return _items.where((prodItem) => prodItem.isFavorite).toList();
     // }
     return [..._items]; //this line returns a copy of the items
   }
-  Product findById(String id){
+
+  Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
-  List<Product> get favoriteItems{
+
+  List<Product> get favoriteItems {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
-
   }
-
 
   // void showFavoritesOnly() {
   //   _showFavoritesOnly = true;
@@ -62,10 +64,31 @@ class Products with ChangeNotifier { //this is a mixin class
   //   notifyListeners();
   // }
 
-
-  void addProducts() {
-   // _items.add(value);
+  void addProducts(Product product) {
+    // _items.add(value);
+    final newProduct = Product(
+        id: DateTime.now().toString(),
+        description: product.description,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl);
+    _items.add(newProduct);
     notifyListeners(); // this is provided by the mixin ChnageNotifier which helps to rebuilt the widget when ever there is a change in the products
   }
 
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
+
+  }
 }
