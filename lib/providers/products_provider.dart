@@ -90,6 +90,9 @@ class Products with ChangeNotifier {
           imageUrl: product.imageUrl);
       _items.add(newProduct);
       notifyListeners(); // this is provided by the mixin ChnageNotifier which helps to rebuilt the widget when ever there is a change in the products
+    }).catchError((error){
+      print(error);
+      throw error;
     });
   }
 
