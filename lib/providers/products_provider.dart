@@ -66,34 +66,34 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> addProducts(Product product) {
+  Future<void> addProducts(Product product) async {
     const url =
         'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products.json';
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'title': product.title,
-        'description': product.description,
-        'imageUrl': product.imageUrl,
-        'price': product.price,
-        'isFavorite': product.isFavorite,
-      }),
-    )
-        .then((response) {
-      // _items.add(value);
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavorite': product.isFavorite,
+        }),
+      );
       final newProduct = Product(
-          id: json.decode(response.body)['name'],//this is the nuique key which is generated in firebasewhich we can use //we use['name] cz it is map with a name key so only to fetch the name(key) we use name
+          id: json.decode(response.body)['name'],
+          //this is the nuique key which is generated in firebasewhich we can use //we use['name] cz it is map with a name key so only to fetch the name(key) we use name
           description: product.description,
           title: product.title,
           price: product.price,
           imageUrl: product.imageUrl);
       _items.add(newProduct);
       notifyListeners(); // this is provided by the mixin ChnageNotifier which helps to rebuilt the widget when ever there is a change in the products
-    }).catchError((error){
+    } catch (error) {
       print(error);
       throw error;
-    });
+    }
+    // _items.add(value);
   }
 
   void updateProduct(String id, Product newProduct) {
