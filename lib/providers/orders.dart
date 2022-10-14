@@ -67,7 +67,7 @@ class Orders with ChangeNotifier {
         {
           'amount': total,
           'dateTime': timestamp.toIso8601String(),
-          //this will send special formatted strinf representation which when decoded will be useful
+          //this will send special formatted string representation which when decoded will be useful
           'products': cartProducts
               .map((cp) => {
                     'id': cp.id,
