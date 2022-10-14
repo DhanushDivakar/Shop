@@ -28,15 +28,16 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
           //it allows us to register a class to which you can then listen in child widgets//and whenevr that class updates the widgets which are liistenig and not all the child widgets, only which are listening will rebuilt
-          update: (ctx, auth, previousProducts) => Products(auth.token, previousProducts == null ? [] : previousProducts.items),
-
+          update: (ctx, auth, previousProducts) => Products(auth.token,
+              previousProducts == null ? [] : previousProducts.items),
         ),
         //this will provide a  context and it shld return a new instance of provide class
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Orders(),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          update: (ctx, auth,previousOrders ) => Orders(auth.token, previousOrders == null ? [] : previousOrders.orders),
+
         ),
       ],
       child: Consumer<Auth>(

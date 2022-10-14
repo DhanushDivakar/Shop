@@ -72,7 +72,7 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products.json?auth=$authToken';
+    final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products.json?auth=$authToken';// final is a runtime const value
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -129,7 +129,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products/$id.json';
+      final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -145,7 +145,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products/$id.json';
+    final url = 'https://shop-app-7a6f0-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
