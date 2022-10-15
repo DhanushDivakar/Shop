@@ -30,8 +30,9 @@ class MyApp extends StatelessWidget {
           //it allows us to register a class to which you can then listen in child widgets//and whenevr that class updates the widgets which are liistenig and not all the child widgets, only which are listening will rebuilt
           update: (ctx, auth, previousProducts) => Products(
             auth.token,
-            previousProducts == null ? [] : previousProducts.items,
             auth.userId,
+            previousProducts == null ? [] : previousProducts.items,
+
           ),
         ),
         //this will provide a  context and it shld return a new instance of provide class
