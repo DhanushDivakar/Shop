@@ -35,33 +35,38 @@ class _OrderItemState extends State<OrderItem> {
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
             ),
           ),
-          if (_expanded)
-            Container(
 
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              height: min(widget.order.products.length * 20.0 + 20.0, 100),
-              child: ListView(
-                children: widget.order.products
-                    .map((prod) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              prod.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text('${prod.quantity} x \$${prod.price}', style: TextStyle(
-                              fontSize: 18, color: Colors.grey
-                            ),)
-                          ],
-                        ))
-                    .toList(),
-              ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+
+
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+            height: _expanded? min(widget.order.products.length * 20.0 + 20.0, 100) : 0,
+            child: ListView(
+              children: widget.order.products
+                  .map((prod) =>
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        prod.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        '${prod.quantity} x \$${prod.price}', style: TextStyle(
+                          fontSize: 18, color: Colors.grey
+                      ),)
+                    ],
+                  ))
+                  .toList(),
             ),
+          ),
         ],
       ),
     );
+
   }
 }
